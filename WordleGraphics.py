@@ -191,14 +191,14 @@ class WordleGWindow:
 
     def get_current_row(self):
         return self._row
-
+    
     def set_current_row(self, row):
         self._row = row
         self._col = 0
         for col in range(N_COLS):
             self.set_square_letter(row, col, " ")
             self.set_square_color(row, col, UNKNOWN_COLOR)
-
+    
     def add_enter_listener(self, fn):
         self._enter_listeners.append(fn)
 
