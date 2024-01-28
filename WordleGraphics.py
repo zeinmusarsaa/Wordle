@@ -20,8 +20,8 @@ PRESENT_COLOR = "#CCBB66"       # Brownish yellow for misplaced letters
 MISSING_COLOR = "#999999"       # Gray for letters that don't appear
 UNKNOWN_COLOR = "#FFFFFF"       # Undetermined letters are white
 KEY_COLOR = "#DDDDDD"# Keys are colored light gray
-CB_CORRECT_COLOR = "#0000FF"  # Blue for correct letters
-CB_PRESENT_COLOR = "#FF69B4"  # Pink for misplaced letters
+CB_CORRECT_COLOR = "#FFA500"  # Orange for correct letters
+CB_PRESENT_COLOR = "#ADD8E6"  # Light Blue for misplaced letters
 CB_MISSING_COLOR = MISSING_COLOR
 
 colorblind_mode = False
