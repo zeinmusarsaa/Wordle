@@ -20,7 +20,7 @@ PRESENT_COLOR = "#CCBB66"       # Brownish yellow for misplaced letters
 MISSING_COLOR = "#999999"       # Gray for letters that don't appear
 UNKNOWN_COLOR = "#FFFFFF"       # Undetermined letters are white
 KEY_COLOR = "#DDDDDD"# Keys are colored light gray
-CB_CORRECT_COLOR = "#FFA500"  # Orange for correct letters
+CB_CORRECT_COLOR = "#FAC898"  # Orange for correct letters
 CB_PRESENT_COLOR = "#ADD8E6"  # Light Blue for misplaced letters
 CB_MISSING_COLOR = MISSING_COLOR
 
@@ -117,25 +117,34 @@ class WordleGWindow:
                 ch = tke.upper()
             else:
                 ch = tke.char.upper()
-            if ch == "\007" or ch == "\177" or ch == "DELETE":
+            print(f"Key Symbol: {tke.keysym}, Keycode: {tke.keycode}")
+            if tke.keysym == "BackSpace" or ch == "\007" or ch == "\177" or ch == "DELETE":
+                print("DELETE Key Pressed")
                 self.show_message("")
                 if self._row < N_ROWS and self._col > 0:
                     self._col -= 1
                     sq = self._grid[self._row][self._col]
                     sq.set_letter(" ")
-            elif ch == "\r" or ch == "\n" or ch == "ENTER":
+            elif tke.keysym == "Return" or ch == "\r" or ch == "\n" or ch == "ENTER":
+                print("Enter ")
                 self.show_message("")
                 s = ""
                 for col in range(N_COLS):
-                    s += self._grid[self._row][col].get_letter();
+                    s += self._grid[self._row][col].get_letter()
                 for fn in self._enter_listeners:
                     fn(s)
             elif ch.isalpha():
-                self.show_message("")
                 if self._row < N_ROWS and self._col < N_COLS:
                     sq = self._grid[self._row][self._col]
+                    print(f"Setting letter at row {self._row}, col {self._col}: {ch}")
                     sq.set_letter(ch)
                     self._col += 1
+                    self._canvas.update_idletasks()
+                # self.show_message("")
+                # if self._row < N_ROWS and self._col < N_COLS:
+                #     sq = self._grid[self._row][self._col]
+                #     sq.set_letter(ch)
+                #     self._col += 1
 
         def press_action(tke):
             self._down_x = tke.x
