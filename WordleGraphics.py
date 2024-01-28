@@ -160,6 +160,7 @@ class WordleGWindow:
                                 highlightthickness=0)
         canvas.pack()
         self._canvas = canvas
+        self._canvas.focus_set() 
         self._grid = create_grid()
         self._message = create_message()
         self._keys = create_keyboard()
@@ -167,6 +168,8 @@ class WordleGWindow:
         root.bind("<Key>", key_action)
         root.bind("<ButtonPress-1>", press_action)
         root.bind("<ButtonRelease-1>", release_action)
+        root.bind("<Return>", key_action)
+        root.bind("<Delete>", key_action)
         self._row = 0
         self._col = 0
         atexit.register(start_event_loop)

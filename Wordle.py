@@ -34,7 +34,7 @@ def enter_action(input_word, chosen_word, window):
 
         if correct_guess:
             tries = window.get_current_row() + 1  # Number of tries is the current row + 1
-            window.show_message("Congratulations! You guessed the word in {} tries.".format(tries))
+            window.show_message("Congratulations! You guessed the word in {} trie(s).".format(tries))
             return  # Exit the function to avoid further processing
 
         # Move on to the next row only if it's not the last guess
