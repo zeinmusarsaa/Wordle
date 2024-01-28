@@ -19,7 +19,12 @@ CORRECT_COLOR = "#66BB66"       # Light green for correct letters
 PRESENT_COLOR = "#CCBB66"       # Brownish yellow for misplaced letters
 MISSING_COLOR = "#999999"       # Gray for letters that don't appear
 UNKNOWN_COLOR = "#FFFFFF"       # Undetermined letters are white
-KEY_COLOR = "#DDDDDD"           # Keys are colored light gray
+KEY_COLOR = "#DDDDDD"# Keys are colored light gray
+CB_CORRECT_COLOR = "#0000FF"  # Blue for correct letters
+CB_PRESENT_COLOR = "#FF69B4"  # Pink for misplaced letters
+CB_MISSING_COLOR = MISSING_COLOR
+
+colorblind_mode = False
 
 CANVAS_WIDTH = 600		# Width of the tkinter canvas (pixels)
 CANVAS_HEIGHT = 700		# Height of the tkinter canvas (pixels)
@@ -58,11 +63,23 @@ BOARD_HEIGHT = N_ROWS * SQUARE_SIZE + (N_ROWS - 1) * SQUARE_SEP
 MESSAGE_X = CANVAS_WIDTH / 2
 MESSAGE_Y = TOP_MARGIN + BOARD_HEIGHT + MESSAGE_SEP
 
+def toggle_colorblind_mode(window):
+    global colorblind_mode
+    colorblind_mode = not colorblind_mode
+    update_board_for_colorblind_mode(window)
+
+def update_board_for_colorblind_mode(window):
+    for row in range(N_ROWS):
+        for col in range(N_COLS):
+            current_color = window.get_square_color(row, col)
+            window.set_square_color(row, col, current_color)
+
 class WordleGWindow:
     """This class creates the Wordle window."""
 
     def __init__(self):
         """Creates the Wordle window."""
+        
 
         def create_grid():
             return [
@@ -173,6 +190,8 @@ class WordleGWindow:
         self._row = 0
         self._col = 0
         atexit.register(start_event_loop)
+        self.colorblind_button = tkinter.Button(self._root, text="Colorblind Mode", command=lambda: toggle_colorblind_mode(self))
+        self.colorblind_button.pack()
 
     def get_square_letter(self, row, col):
         return self._grid[row][col].get_letter()
@@ -236,6 +255,14 @@ class WordleSquare:
         return self._color
 
     def set_color(self, color):
+        global colorblind_mode
+        if colorblind_mode:
+            if color == CORRECT_COLOR:
+                color = CB_CORRECT_COLOR
+            elif color == PRESENT_COLOR:
+                color = CB_PRESENT_COLOR
+            elif color == MISSING_COLOR:
+                color = CB_MISSING_COLOR
         color = color.upper()
         self._color = color
         fg = "White"
