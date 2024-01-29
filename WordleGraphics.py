@@ -118,6 +118,10 @@ class WordleGWindow:
             else:
                 ch = tke.char.upper()
             print(f"Key Symbol: {tke.keysym}, Keycode: {tke.keycode}")
+            
+            if tke.keysym == "Right":
+                toggle_colorblind_mode(self)
+                return
             if tke.keysym == "BackSpace" or ch == "\007" or ch == "\177" or ch == "DELETE":
                 print("DELETE Key Pressed")
                 self.show_message("")
@@ -272,6 +276,13 @@ class WordleSquare:
                 color = CB_PRESENT_COLOR
             elif color == MISSING_COLOR:
                 color = CB_MISSING_COLOR
+        else:
+            if color == CB_CORRECT_COLOR:
+                color = CORRECT_COLOR
+            elif color == CB_PRESENT_COLOR:
+                color = PRESENT_COLOR
+            elif color == CB_MISSING_COLOR:
+                color = MISSING_COLOR
         color = color.upper()
         self._color = color
         fg = "White"
