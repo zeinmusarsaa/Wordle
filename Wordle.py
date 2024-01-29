@@ -10,7 +10,10 @@ def choose_random_word():
     return random.choice(FIVE_LETTER_WORDS)
 
 def display_word_in_row(word, row, window):
-    pass
+    for row in range(N_ROWS):
+        for col in range(N_COLS):
+            current_color = window.get_square_color(row, col)
+            window.set_square_color(row, col, current_color)
     #for col in range(N_COLS):
         #window.set_square_letter(row, col, word[col].upper())
 
@@ -20,17 +23,28 @@ def enter_action(input_word, chosen_word, window):
 
     if input_word in FIVE_LETTER_WORDS:
         correct_guess = True  # Assume the guess is correct
+        letter_count = {}
+        for letter in chosen_word:
+            if letter not in letter_count:
+                letter_count[letter] = 1
+            else:
+                letter_count[letter] += 1
 
         # Check and color the boxes based on the match
         for col in range(min(N_COLS, len(input_word), len(chosen_word))):
             if input_word[col] == chosen_word[col]:
                 window.set_square_color(window.get_current_row(), col, CORRECT_COLOR)
+                letter_count[input_word[col]] -= 1
             else:
                 correct_guess = False  # The guess is incorrect
-                if input_word[col] in chosen_word:
+        for col in range(min(N_COLS, len(input_word), len(chosen_word))):
+            if input_word[col] != chosen_word[col]:
+                if input_word[col] in letter_count and letter_count[input_word[col]] > 0:
                     window.set_square_color(window.get_current_row(), col, PRESENT_COLOR)
+                    letter_count[input_word[col]] -= 1
                 else:
                     window.set_square_color(window.get_current_row(), col, MISSING_COLOR)
+      
 
         if correct_guess:
             tries = window.get_current_row() + 1  # Number of tries is the current row + 1
